@@ -1,4 +1,6 @@
 <?php
+include_once dirname( __FILE__ ) . '/class.html-builder.php';
+
 class DOM {
 	public $root;
 
@@ -35,6 +37,10 @@ class DOM {
 		return $this->find_by( new Find_By_Attribute_Strategy( $attr, $val ) );
 	}
 
+	public function HTML() {
+		return $this->root->HTML();
+	}
+
 	public static function parse() {
 		// TODO
 		return new DOM();
@@ -65,6 +71,36 @@ class DOM_Element {
 		$this->children = array();
 		$this->parent = null;
 	}
+
+	public function HTML() {
+		// Prepare children HTML
+		$content = '';
+		foreach ( $this->children as $child ) {
+			$content .= $child->HTML();
+		}
+
+		$el = HTML_Builder::element( $this->tag )->content( $content );
+
+		// Transfer attributes
+		foreach( $this->attrs as $attr => $val ) {
+			$el = $el->attr( $attr, $val );
+		}
+
+		foreach( $this->classes as $class ) {
+			$el = $el->addClass( $class );
+		}
+
+		// Transfer all CSS
+		foreach( $this->css as $attr => $val ) {
+			$el = $el->css( $attr, $val );
+		}
+
+		return $el->build();
+	}
+
+	public function is_leaf() {
+		return empty( $this->children );
+	}
 }
 
 class Find_By_Tag_Strategy {
@@ -92,4 +128,13 @@ class Find_By_Attribute_Strategy {
 		return isset( $node->attrs[$this->attr] ) && $this->val == $node->attrs[$this->attr];
 	}
 }
+
+$dom = new DOM();
+$el = new DOM_Element( 'div', array( 'data-attr', 'true' ) );
+$dom->root = $el;
+$el->children[] = new DOM_Element( 'p', array( 'data-attr' => 'true' ), array(), array(), 'here' );
+$el->children[] = new DOM_Element( 'p', array( 'data-attr' => 'true' ), array(), array(), 'is some' );
+$el->children[] = new DOM_Element( 'p', array( 'data-attr' => 'true' ), array(), array(), 'text' );
+
+echo $dom->HTML();
 ?>
