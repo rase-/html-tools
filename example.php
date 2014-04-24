@@ -12,6 +12,7 @@ $str =
 				->addClass( 'test', 'klz' )
 				->css( 'height', '120px' )
 				->css( 'width', '200px' )
+				->data( 'test', 'value' )
 				->build()
 		)
 		->build();

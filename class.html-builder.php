@@ -86,6 +86,11 @@ class HTML_Builder {
 		return $this;
 	}
 
+	public function data( $attr, $val ) {
+		$this->attrs["data-$attr"] = $val;
+		return $this;
+	}
+
 	// For neat setting of attributes, like so: ->src( 'hello.png' )
 	public function __call( $name, $arguments ) {
 		$this->attr( $name, $arguments[0] );
