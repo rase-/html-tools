@@ -49,14 +49,17 @@ class HTML_Builder {
 	public function build() {
 		$attr_string = $this->build_attr_string();
 		$css_string = $this->build_css_string();
+		$css_string = empty( $css_string ) ? '' : "style=\"$css_string\"";
 		$class_string = implode( ' ', $this->classes );
+		$class_string = empty( $class_string ) ? '' : "class=\"$class_string\"";
 
 		if ( in_array( strtolower( $this->tag ), self::$no_closing_tag ) ) {
-			return "<$this->tag $attr_string class=\"$class_string\" style=\"$css_string\" />";
+			return "<$this->tag $attr_string $class_string $css_string />";
 		}
 
-		return "<$this->tag $attr_string class=\"$class_string\" style=\"$css_string\">$this->content</$this->tag>";
+		return "<$this->tag $attr_string $class_string $css_string>$this->content</$this->tag>";
 	}
+
 
 	public function addClass() {
 		$classes = func_get_args();
