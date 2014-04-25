@@ -5,6 +5,7 @@ class HTML_Builder {
 	private $classes;
 	private $attrs;
 	private $css;
+	private $raws;
 
 	private static $no_closing_tag = array(
 		'img',
@@ -28,6 +29,7 @@ class HTML_Builder {
 		$this->classes = array();
 		$this->attrs = array();
 		$this->css = array();
+		$this->raws = array();
 	}
 
 	private function build_attr_string() {
@@ -52,12 +54,13 @@ class HTML_Builder {
 		$css_string = empty( $css_string ) ? '' : "style=\"$css_string\"";
 		$class_string = implode( ' ', $this->classes );
 		$class_string = empty( $class_string ) ? '' : "class=\"$class_string\"";
+		$raw_str = implode( ' ', $this->raws );
 
 		if ( in_array( strtolower( $this->tag ), self::$no_closing_tag ) ) {
-			return "<$this->tag $attr_string $class_string $css_string />";
+			return "<$this->tag $raw_str $attr_string $class_string $css_string />";
 		}
 
-		return "<$this->tag $attr_string $class_string $css_string>$this->content</$this->tag>";
+		return "<$this->tag $raw_str $attr_string $class_string $css_string>$this->content</$this->tag>";
 	}
 
 
@@ -95,6 +98,12 @@ class HTML_Builder {
 
 	public function data( $attr, $val ) {
 		$this->attrs["data-$attr"] = $val;
+		return $this;
+	}
+
+	// Puts a raw string in the element tag
+	public function raw( $raw_string ) {
+		$this->raws[] = $raw_string;
 		return $this;
 	}
 
