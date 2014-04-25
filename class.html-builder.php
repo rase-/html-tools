@@ -70,6 +70,10 @@ class HTML_Builder {
 	}
 
 	public function content( $content ) {
+		if ( $content instanceof HTML_Builder ) {
+			$content = $content->build();
+		}
+
 		$this->content .= $content;
 		return $this;
 	}
