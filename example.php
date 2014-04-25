@@ -4,16 +4,14 @@ include_once dirname( __FILE__ ) . '/class.html-builder.php';
 $str =
 	HTML_Builder::element( 'a' )
 		->href( 'http://link.com' )
-		->content(
-			'some text'
-			.
-			HTML_Builder::element()->tag( 'img' )
-				->src( 'hello.png' )
-				->addClass( 'test', 'klz' )
-				->css( 'height', '120px' )
-				->css( 'width', '200px' )
-				->data( 'test', 'value' )
-				->build()
+		->content( 'this is some text' )
+		->content( HTML_Builder::element()->tag( 'img' )
+					->src( 'hello.png' )
+					->addClass( 'test', 'klz' )
+					->css( 'height', '120px' )
+					->css( 'width', '200px' )
+					->data( 'test', 'value' )
+					->build()
 		)
 		->build();
 echo $str;

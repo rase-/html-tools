@@ -70,7 +70,7 @@ class HTML_Builder {
 	}
 
 	public function content( $content ) {
-		$this->content = $content;
+		$this->content .= $content;
 		return $this;
 	}
 
